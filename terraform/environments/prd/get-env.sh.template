@@ -1,0 +1,33 @@
+#!/bin/bash
+USE_ENVIRONMENT="prd"
+PROJECT_NAME="discket"
+RESOURCE_GROUP="${PROJECT_NAME}_${USE_ENVIRONMENT}_rg"
+SA_NAME="${PROJECT_NAME}${USE_ENVIRONMENT}sac"
+AD_B2C_TENANT_NAME="${PROJECT_NAME}${USE_ENVIRONMENT}.b2clogin.com"
+AD_B2C_DOMAIN_ID="${PROJECT_NAME}${USE_ENVIRONMENT}.onmicrosoft.com"
+
+# Get Azure DB Connection String
+database_url="postgresql://sqladmin:test@hoge1234@${PROJECT_NAME}sql${USE_ENVIRONMENT}.postgres.database.azure.com:5432/postgres?schema=public&sslmode=require"
+
+# Azureストレージアカウントの接続文字列を取得
+raw_connection_string=$(az storage account show-connection-string --resource-group $RESOURCE_GROUP --name $SA_NAME --query connectionString -o tsv)
+
+# 接続文字列を希望の形式に変換
+azure_storage_connection_string=$(echo $raw_connection_string | sed -E 's/(DefaultEndpointsProtocol=[^;]+);(EndpointSuffix=[^;]+);(AccountName=[^;]+);(AccountKey=[^;]+);[^;]+;[^;]+;[^;]+;[^;]+/\1;\3;\4;\2/')
+
+# Get Azure Storage Account Key
+azure_storage_account_key=$(az storage account keys list --resource-group $RESOURCE_GROUP --account-name $SA_NAME --query "[0].value" -o tsv)
+
+# Get Azure AD B2C Authority
+azure_ad_b2c_authority="https://${AD_B2C_TENANT_NAME}/${AD_B2C_DOMAIN_ID}/B2C_1_${PROJECT_NAME}_${USE_ENVIRONMENT}_static_site"
+
+# Print in the desired format
+echo "  \"database-url\" = \"$database_url\""
+echo "  \"azure-storage-connection-string\" = \"$azure_storage_connection_string\""
+echo "  \"azure-storage-account-name\" = \"${SA_NAME}\""
+echo "  \"azure-storage-account-key\" = \"$azure_storage_account_key\""
+echo "  \"azure-ad-b2c-client-id\" = \"portalから取得\""
+echo "  \"azure-ad-b2c-client-secret\" = \"portalから取得\""
+echo "  \"azure-ad-b2c-tenant-id\" =  \"portalから取得\""
+echo "  \"azure-ad-b2c-tenant-name\" = \"$AD_B2C_TENANT_NAME\""
+echo "  \"azure-ad-b2c-authority\" = \"$azure_ad_b2c_authority\""

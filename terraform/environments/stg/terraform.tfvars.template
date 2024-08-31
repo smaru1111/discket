@@ -1,0 +1,21 @@
+environment = "stg"
+location    = "eastus"
+db_admin_password = "test"
+
+repo_url = "https://github.com/discket.git"
+branch = "main"
+github_token = "test"
+
+secrets = {
+  "next-public-database-url"=""
+  "next-public-firebase-api-key"=""
+  "next-public-firebase-auth-domain"=""
+  "next-public-firebase-app-id"=""
+  "next-public-firebase-storage-bucket"=""
+  "next-public-firebase-messaging-sender-id"=""
+  "next-public-project-id"=""
+  "next-public-firebase-private-key"=""
+  "next-public-firebase-client-email"=""
+  "next-public-azure-storage-connection-string"=""
+  "next-public-open-ai-key"=""
+}

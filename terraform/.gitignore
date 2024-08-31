@@ -1,0 +1,24 @@
+# Terraform .gitignore
+
+# Terraformワークスペースディレクトリを無視
+**/.terraform/*
+
+# 機密情報を含む可能性があるため.tfstateファイルを無視
+*.tfstate
+*.tfstate.*
+
+# 機密情報を含む可能性があるため.tfvarsファイルを無視
+*.tfvars
+*.tfvars.json
+
+# 機密情報を含む可能性があるため、Terraformプランファイルを無視
+*.tfplan
+*.tfplan.*
+
+# CLI設定ファイルを無視
+.terraformrc
+terraform.rc
+
+# get-env.shを無視
+*get-env.sh
+*github-actions-env.sh

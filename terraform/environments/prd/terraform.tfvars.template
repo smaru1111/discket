@@ -1,0 +1,23 @@
+environment = "prd"
+location    = "eastus"
+db_admin_password = "test@hoge1234"
+
+repo_url = "https://github.com/discket.git"
+branch = "main"
+github_token = "test"
+
+secrets = {
+  "database-url" = "",
+  "form-recognizer-endpoint" = "",
+  "form-recognizer-key" = "",
+  "search-service-endpoint" = "",
+  "search-service-key" = "",
+  "search-index-name" = "",
+  "aoai-endpoint" = "",
+  "aoai-key" = "",
+  "aoai-embedding-deployment-name" = "",
+  "aoai-gpt-deployment-name" = "",
+  "azure-storage-connection-string" = "",
+  "azure-storage-account-name" = "",
+  "azure-storage-account-key" = ""
+}

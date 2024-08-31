@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# 環境変数
+OUTPUT_ENV="DEV"
+ENV="dev"
+PROJECT_NAME="discket"
+APP_NAME="${PROJECT_NAME}-${ENV}-app"
+SWA_NAME="${PROJECT_NAME}-${ENV}-static-site"
+
+# Azure CLI コマンドを実行して必要な情報を取得
+staticwebapp_secrets=$(az staticwebapp secrets list --name "${SWA_NAME}" --query properties.apiKey -o tsv)
+client_id=$(az ad sp list --display-name "${APP_NAME}" --query "[0].id" -o tsv)
+azure_client_secret=$(az ad sp credential reset --id "${client_id}" --query password -o tsv)
+azure_subscription_id=$(az account show --query id -o tsv)
+azure_tenant_id=$(az account show --query tenantId -o tsv)
+azure_client_app_id=$(az ad sp show --id "${client_id}" --query appId -o tsv)
+
+# 結果を出力
+echo "AZURE_STATIC_WEB_APPS_API_TOKEN_${OUTPUT_ENV}=\"${staticwebapp_secrets}\""
+echo "AZURE_CLIENT_SECRET_${OUTPUT_ENV}=\"${azure_client_secret}\""
+echo "AZURE_SUBSCRIPTION_ID=\"${azure_subscription_id}\""
+echo "AZURE_TENANT_ID=\"${azure_tenant_id}\""
+echo "AZURE_CLIENT_ID_${OUTPUT_ENV}=\"${azure_client_app_id}\""
+
+# portalから取得する情報については、手動で取得して設定する必要があります
+echo "AZURE_FUNCTIONAPP_PUBLISH_PROFILE_${OUTPUT_ENV}=\"<取得したpublish profileの内容>\""
