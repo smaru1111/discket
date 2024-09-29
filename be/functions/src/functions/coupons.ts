@@ -1,11 +1,11 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions'
-import { GET, POST, PUT, DELETE } from '../controller/users/route'
+import { GET, POST, PUT, DELETE } from '../controller/coupons/route'
 
-export async function users(
+export async function coupons(
   request: HttpRequest,
   context: InvocationContext
 ): Promise<HttpResponseInit> {
-  context.log(`🔥🔥httpTriggerUsersが発火🔥🔥`, request?.body)
+  context.log(`🔥🔥httpTriggerCouponsが発火🔥🔥`, request?.body)
   if (request.method === 'GET') {
     return await GET(request)
   } else if (request.method === 'POST') {
@@ -22,8 +22,8 @@ export async function users(
   }
 }
 
-app.http('users', {
+app.http('coupons', {
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   authLevel: 'anonymous',
-  handler: users,
+  handler: coupons,
 })
