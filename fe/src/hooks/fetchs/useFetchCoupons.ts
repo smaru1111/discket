@@ -59,8 +59,9 @@ export default function useFetchCoupons() {
 
   const deleteCoupon = async (id: number) => {
     try {
-      await fetchApiWithEnv(`/api/coupons?id=${id}`, {
+      await fetchApiWithEnv(`/api/coupons`, {
         method: 'DELETE',
+        body: JSON.stringify({ ids: [id] }),
       })
       deleteStoreCoupon(id)
       enqueueSnackbar('クーポンの削除に成功しました', { variant: 'success' })

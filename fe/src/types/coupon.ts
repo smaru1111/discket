@@ -4,5 +4,5 @@ export type CouponEntity = {
   name: string
   description: string
   expiration: string
-  aad_uid: string
+  aadUid: string
 }

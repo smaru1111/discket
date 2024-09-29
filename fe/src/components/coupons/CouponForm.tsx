@@ -1,5 +1,4 @@
 import { CouponEntity } from '@/types/coupon'
-
 import { useState } from 'react'
 import { Button } from '../shadcn/ui/button'
 import { Textarea } from '../shadcn/ui/textarea'
@@ -11,13 +10,11 @@ export function CouponForm({
   onSave,
   isEditMode,
 }: {
-  coupon: CouponEntity | null
+  coupon: CouponEntity
   onSave: (coupon: CouponEntity) => void
   isEditMode: boolean
 }) {
-  const [formData, setFormData] = useState(
-    coupon || { id: 0, imageUrl: '', name: '', description: '', expiration: '', aad_uid: 'user1' }
-  )
+  const [formData, setFormData] = useState<CouponEntity>(coupon)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -26,7 +23,12 @@ export function CouponForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSave(formData)
+
+    // expiration (YYYY-MM-DD) を ISO 8601形式 (YYYY-MM-DDT00:00:00Z) に変換
+    const formattedExpiration = new Date(formData.expiration).toISOString()
+
+    // 変換後の expiration を含めてデータを保存
+    onSave({ ...formData, expiration: formattedExpiration })
   }
 
   return (
@@ -37,7 +39,7 @@ export function CouponForm({
           <Input
             id="imageUrl"
             name="imageUrl"
-            value={formData.imageUrl}
+            value={formData.imageUrl || ''}
             onChange={handleChange}
             disabled={!isEditMode}
           />
@@ -47,7 +49,7 @@ export function CouponForm({
           <Input
             id="name"
             name="name"
-            value={formData.name}
+            value={formData.name || ''}
             onChange={handleChange}
             disabled={!isEditMode}
           />
@@ -57,7 +59,7 @@ export function CouponForm({
           <Textarea
             id="description"
             name="description"
-            value={formData.description}
+            value={formData.description || ''}
             onChange={handleChange}
             disabled={!isEditMode}
           />
@@ -68,7 +70,7 @@ export function CouponForm({
             id="expiration"
             name="expiration"
             type="date"
-            value={formData.expiration}
+            value={formData.expiration || ''}
             onChange={handleChange}
             disabled={!isEditMode}
           />

@@ -20,45 +20,50 @@ import {
   DialogTrigger,
 } from '@/components/shadcn/ui/dialog'
 
+const defaultCoupon: CouponEntity = {
+  id: null,
+  imageUrl: '',
+  name: '',
+  description: '',
+  expiration: '',
+  aadUid: '',
+}
+
 export default function Home() {
   const [isEditMode, setIsEditMode] = useState(false)
-  const [selectedCoupon, setSelectedCoupon] = useState<CouponEntity | null>(null)
+  const [selectedCoupon, setSelectedCoupon] = useState<CouponEntity>(defaultCoupon)
   const me = useAuthStore((state) => state.me)
   const coupons = useCouponStore((state) => state.coupons)
   const { createCoupon, deleteCoupon, updateCoupon, fetchCoupons } = useFetchCoupons()
   const { getAccount } = useAuth()
 
   const handleCouponAddNew = async () => {
+    setSelectedCoupon(defaultCoupon)
+    setIsEditMode(true)
+  }
+
+  const handleCouponEdit = (coupon: CouponEntity) => {
+    console.log('edit coupon', coupon)
+    setSelectedCoupon(coupon)
+    setIsEditMode(true)
+  }
+
+  const handleCouponSave = async (coupon: CouponEntity) => {
     const currentUser = await getAccount()
     console.log('currentUser', currentUser)
     if (!currentUser) {
       enqueueSnackbar('ログインしてください', { variant: 'error' })
       return
     }
+    console.log('save coupon', coupon)
+    const { id, aadUid, ...rest } = coupon
 
-    setSelectedCoupon({
-      id: null,
-      imageUrl: '',
-      name: '',
-      description: '',
-      expiration: '',
-      aad_uid: currentUser.uid,
-    })
-    setIsEditMode(true)
-  }
-
-  const handleCouponEdit = (coupon: CouponEntity) => {
-    setSelectedCoupon(coupon)
-    setIsEditMode(true)
-  }
-
-  const handleCouponSave = (coupon: CouponEntity) => {
     if (coupon.id === null) {
-      createCoupon(coupon)
+      createCoupon({ ...rest, aadUid: currentUser.uid })
     } else {
-      updateCoupon(coupon)
+      updateCoupon({ ...rest, id, aadUid: currentUser.uid })
     }
-    setSelectedCoupon(null)
+    setSelectedCoupon(defaultCoupon)
     setIsEditMode(false)
   }
 
@@ -120,6 +125,8 @@ export default function Home() {
           <CouponCard
             key={coupon.id}
             coupon={coupon}
+            isEditMode={isEditMode}
+            onSave={handleCouponSave}
             onEdit={handleCouponEdit}
             onDelete={handleCouponDelete}
           />
