@@ -47,15 +47,6 @@ module "functions" {
     "FUNCTIONS_EXTENSION_VERSION"    = "~4"
     "WEBSITE_NODE_DEFAULT_VERSION"   = "18"
     "DATABASE_URL"                   = module.key_vault_secret.secrets["database-url"]
-    "FORM_RECOGNIZER_ENDPOINT"       = module.key_vault_secret.secrets["form-recognizer-endpoint"]
-    "FORM_RECOGNIZER_KEY"            = module.key_vault_secret.secrets["form-recognizer-key"]
-    "SEARCH_SERVICE_ENDPOINT"        = module.key_vault_secret.secrets["search-service-endpoint"]
-    "SEARCH_SERVICE_KEY"             = module.key_vault_secret.secrets["search-service-key"]
-    "SEARCH_INDEX_NAME"              = module.key_vault_secret.secrets["search-index-name"]
-    "AOAI_ENDPOINT"                  = module.key_vault_secret.secrets["aoai-endpoint"]
-    "AOAI_KEY"                       = module.key_vault_secret.secrets["aoai-key"]
-    "AOAI_EMBEDDING_DEPLOYMENT_NAME" = module.key_vault_secret.secrets["aoai-embedding-deployment-name"]
-    "AOAI_GPT_DEPLOYMENT_NAME"       = module.key_vault_secret.secrets["aoai-gpt-deployment-name"]
     "AZURE_STORAGE_CONNECTION_STRING" = module.key_vault_secret.secrets["azure-storage-connection-string"]
     "AZURE_STORAGE_ACCOUNT_NAME"     = module.key_vault_secret.secrets["azure-storage-account-name"]
     "AZURE_STORAGE_ACCOUNT_KEY"      = module.key_vault_secret.secrets["azure-storage-account-key"]
