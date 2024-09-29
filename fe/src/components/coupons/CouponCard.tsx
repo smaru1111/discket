@@ -25,12 +25,14 @@ import {
 export function CouponCard({
   coupon,
   isEditMode,
+  setIsEditMode,
   onSave,
   onEdit,
   onDelete,
 }: {
   coupon: CouponEntity
   isEditMode: boolean
+  setIsEditMode: (isEditMode: boolean) => void
   onSave: (coupon: CouponEntity) => void
   onEdit: (coupon: CouponEntity) => void
   onDelete: (id: number | null) => void
@@ -46,7 +48,7 @@ export function CouponCard({
         <p className="text-sm">有効期限: {coupon.expiration}</p>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Dialog open={isEditMode}>
+        <Dialog open={isEditMode} onOpenChange={setIsEditMode}>
           <DialogTrigger asChild>
             <Button variant="outline" onClick={() => onEdit(coupon)}>
               <Edit className="mr-2 h-4 w-4" /> 編集

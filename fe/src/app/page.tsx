@@ -126,6 +126,7 @@ export default function Home() {
             key={coupon.id}
             coupon={coupon}
             isEditMode={isEditMode}
+            setIsEditMode={setIsEditMode}
             onSave={handleCouponSave}
             onEdit={handleCouponEdit}
             onDelete={handleCouponDelete}
