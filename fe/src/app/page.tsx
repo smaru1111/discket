@@ -30,8 +30,10 @@ const defaultCoupon: CouponEntity = {
 }
 
 export default function Home() {
-  const [isEditMode, setIsEditMode] = useState(false)
   const [selectedCoupon, setSelectedCoupon] = useState<CouponEntity>(defaultCoupon)
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
+
   const me = useAuthStore((state) => state.me)
   const coupons = useCouponStore((state) => state.coupons)
   const { createCoupon, deleteCoupon, updateCoupon, fetchCoupons } = useFetchCoupons()
@@ -39,13 +41,11 @@ export default function Home() {
 
   const handleCouponAddNew = async () => {
     setSelectedCoupon(defaultCoupon)
-    setIsEditMode(true)
   }
 
   const handleCouponEdit = (coupon: CouponEntity) => {
     console.log('edit coupon', coupon)
     setSelectedCoupon(coupon)
-    setIsEditMode(true)
   }
 
   const handleCouponSave = async (coupon: CouponEntity) => {
@@ -60,11 +60,12 @@ export default function Home() {
 
     if (coupon.id === null) {
       createCoupon({ ...rest, aadUid: currentUser.uid })
+      setIsCreateDialogOpen(false)
     } else {
       updateCoupon({ ...rest, id, aadUid: currentUser.uid })
+      setIsEditDialogOpen(false)
     }
     setSelectedCoupon(defaultCoupon)
-    setIsEditMode(false)
   }
 
   const handleCouponDelete = (id: number | null) => {
@@ -91,6 +92,7 @@ export default function Home() {
     }
     await fetchCoupons(uid)
   }
+
   useEffect(() => {
     fetchCouponsData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -100,7 +102,7 @@ export default function Home() {
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">割引券管理</h1>
-        <Dialog>
+        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={handleCouponAddNew}>
               <PlusCircle className="mr-2 h-4 w-4" /> 新しい割引券を追加
@@ -108,15 +110,14 @@ export default function Home() {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>
-                {isEditMode
-                  ? selectedCoupon?.id === null
-                    ? '新しい割引券'
-                    : '割引券を編集'
-                  : '割引券の詳細'}
-              </DialogTitle>
+              <DialogTitle>新しい割引券</DialogTitle>
             </DialogHeader>
-            <CouponForm coupon={selectedCoupon} onSave={handleCouponSave} isEditMode={isEditMode} />
+            <CouponForm
+              coupon={selectedCoupon}
+              onSave={handleCouponSave}
+              isEditMode={isCreateDialogOpen}
+              setIsEditMode={setIsCreateDialogOpen}
+            />
           </DialogContent>
         </Dialog>
       </div>
@@ -125,8 +126,6 @@ export default function Home() {
           <CouponCard
             key={coupon.id}
             coupon={coupon}
-            isEditMode={isEditMode}
-            setIsEditMode={setIsEditMode}
             onSave={handleCouponSave}
             onEdit={handleCouponEdit}
             onDelete={handleCouponDelete}

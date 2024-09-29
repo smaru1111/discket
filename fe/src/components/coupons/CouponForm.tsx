@@ -9,10 +9,12 @@ export function CouponForm({
   coupon,
   onSave,
   isEditMode,
+  setIsEditMode,
 }: {
   coupon: CouponEntity
   onSave: (coupon: CouponEntity) => void
   isEditMode: boolean
+  setIsEditMode: (isEditMode: boolean) => void
 }) {
   const { uploadFile } = useStorage() // useStorageからuploadFileを取得
   const [formData, setFormData] = useState<CouponEntity>(coupon)
@@ -48,6 +50,7 @@ export function CouponForm({
 
     // 変換後の expiration を含めてデータを保存
     onSave({ ...formData, expiration: formattedExpiration })
+    setIsEditMode(false)
   }
 
   return (

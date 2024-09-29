@@ -21,22 +21,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../shadcn/ui/dialog'
+import { useState } from 'react'
 
 export function CouponCard({
   coupon,
-  isEditMode,
-  setIsEditMode,
   onSave,
   onEdit,
   onDelete,
 }: {
   coupon: CouponEntity
-  isEditMode: boolean
-  setIsEditMode: (isEditMode: boolean) => void
   onSave: (coupon: CouponEntity) => void
   onEdit: (coupon: CouponEntity) => void
   onDelete: (id: number | null) => void
 }) {
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
   return (
     <Card>
       <CardHeader>
@@ -48,9 +47,15 @@ export function CouponCard({
         <p className="text-sm">有効期限: {coupon.expiration}</p>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Dialog open={isEditMode} onOpenChange={setIsEditMode}>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline" onClick={() => onEdit(coupon)}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                onEdit(coupon)
+                setIsDialogOpen(true)
+              }}
+            >
               <Edit className="mr-2 h-4 w-4" /> 編集
             </Button>
           </DialogTrigger>
@@ -58,7 +63,12 @@ export function CouponCard({
             <DialogHeader>
               <DialogTitle>割引券を編集</DialogTitle>
             </DialogHeader>
-            <CouponForm coupon={coupon} onSave={onSave} isEditMode={true} />
+            <CouponForm
+              coupon={coupon}
+              onSave={onSave}
+              isEditMode={isDialogOpen}
+              setIsEditMode={setIsDialogOpen}
+            />
           </DialogContent>
         </Dialog>
         <AlertDialog>
