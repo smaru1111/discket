@@ -8,9 +8,9 @@ export default function useFetchCoupons() {
   const updateStoreCoupon = useCouponStore((state) => state.updateStoreCoupon)
   const deleteStoreCoupon = useCouponStore((state) => state.deleteStoreCoupon)
 
-  const fetchCoupons = async () => {
+  const fetchCoupons = async (uid: string) => {
     try {
-      const coupons = await fetchApiWithEnv(`/api/coupons`)
+      const coupons = await fetchApiWithEnv(`/api/coupons?uid=${uid}`)
       setStoreCoupons(coupons)
       enqueueSnackbar('クーポンの取得に成功しました', { variant: 'success' })
     } catch (err) {

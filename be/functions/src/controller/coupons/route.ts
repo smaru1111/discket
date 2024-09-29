@@ -15,6 +15,7 @@ export async function GET(req: HttpRequest): Promise<HttpResponseInit> {
   const aad_uid = getQueryParams(req.url, 'uid')
   const decodedToken: any = await validateToken(req)
   const decoded_uid = decodedToken.oid
+  console.log('aad_uid', aad_uid)
 
   if (id) {
     const coupons = await getCoupon(id)

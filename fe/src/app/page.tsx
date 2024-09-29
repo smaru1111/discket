@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react'
 import { PlusCircle } from 'lucide-react'
 import { CouponCard } from '@/components/coupons/CouponCard'
-import { Button } from '@/components/shadcn/ui/button'
-import { DialogHeader } from '@/components/shadcn/ui/dialog'
 import { Dialog, DialogTrigger, DialogContent, DialogTitle } from '@radix-ui/react-dialog'
 import { CouponEntity } from '@/types/coupon'
 import { CouponForm } from '@/components/coupons/CouponForm'
@@ -12,23 +10,33 @@ import { useAuthStore } from '@/store/AuthStore'
 import { useCouponStore } from '@/store/CouponStore'
 import useFetchCoupons from '@/hooks/fetchs/useFetchCoupons'
 import { enqueueSnackbar } from 'notistack'
+import { useAuth } from '@/hooks/useAuth'
+import { Button } from '@/components/shadcn/ui/button'
+import { DialogHeader } from '@/components/shadcn/ui/dialog'
 
-export default function CouponManagement() {
+export default function Home() {
   const [isEditMode, setIsEditMode] = useState(false)
   const [selectedCoupon, setSelectedCoupon] = useState<CouponEntity | null>(null)
   const me = useAuthStore((state) => state.me)
   const coupons = useCouponStore((state) => state.coupons)
-  const { createCoupon, deleteCoupon, updateCoupon, fetchCoupon, fetchCoupons } = useFetchCoupons()
+  const { createCoupon, deleteCoupon, updateCoupon, fetchCoupons } = useFetchCoupons()
+  const { getAccount } = useAuth()
 
-  const handleCouponAddNew = () => {
-    if (!me) throw new Error('User not found')
+  const handleCouponAddNew = async () => {
+    const currentUser = await getAccount()
+    console.log('currentUser', currentUser)
+    if (!currentUser) {
+      enqueueSnackbar('ログインしてください', { variant: 'error' })
+      return
+    }
+
     setSelectedCoupon({
       id: null,
       imageUrl: '',
       name: '',
       description: '',
       expiration: '',
-      aad_uid: me.uid,
+      aad_uid: currentUser.uid,
     })
     setIsEditMode(true)
   }
@@ -58,10 +66,23 @@ export default function CouponManagement() {
   }
 
   const fetchCouponsData = async () => {
-    await fetchCoupons()
+    const currentUser = await getAccount()
+    console.log('currentUser', currentUser)
+    if (!currentUser) {
+      enqueueSnackbar('ログインしてください', { variant: 'error' })
+      return
+    }
+    const uid = currentUser.uid
+
+    if (!uid) {
+      enqueueSnackbar('ログインしてください', { variant: 'error' })
+      return
+    }
+    await fetchCoupons(uid)
   }
   useEffect(() => {
     fetchCouponsData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

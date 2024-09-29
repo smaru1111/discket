@@ -9,12 +9,12 @@ import {
 } from '@radix-ui/react-alert-dialog'
 import { Dialog, DialogTrigger, DialogContent, DialogTitle } from '@radix-ui/react-dialog'
 import { Edit, Trash2 } from 'lucide-react'
+import { CouponEntity } from '@/types/coupon'
+import { CouponForm } from './CouponForm'
 import { AlertDialogHeader, AlertDialogFooter } from '../shadcn/ui/alert-dialog'
 import { Button } from '../shadcn/ui/button'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../shadcn/ui/card'
 import { DialogHeader } from '../shadcn/ui/dialog'
-import { CouponEntity } from '@/types/coupon'
-import { CouponForm } from './CouponForm'
 
 export function CouponCard({
   coupon,

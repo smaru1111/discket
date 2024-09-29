@@ -33,7 +33,6 @@ export const useAuth = () => {
         account.idTokenClaims.name
       ) {
         const user = await fetchB2CUser(account.idTokenClaims.oid)
-        const jobTitle = user.jobTitle
 
         const activeUser = {
           uid: account.idTokenClaims.oid,
@@ -81,7 +80,7 @@ export const useAuth = () => {
         instance.logout()
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setStoreMe, getAccount, instance, context.inProgress])
 
   const signUp = useCallback(async () => {
@@ -90,7 +89,7 @@ export const useAuth = () => {
     } catch (error) {
       console.error('useAADB2CAuth: signUpAzure error', error)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [instance, checkCurrentUser])
 
   const login = useCallback(async () => {
@@ -113,8 +112,8 @@ export const useAuth = () => {
     } catch (error) {
       console.error('useAADB2CAuth: logoutAzure error', error)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [instance, setStoreMe])
 
-  return { login, logout, signUp, checkCurrentUser }
+  return { login, logout, signUp, checkCurrentUser, getAccount }
 }
