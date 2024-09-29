@@ -1,10 +1,10 @@
 import prisma from '../utils/prisma'
 import { CreateCouponsInput, UpdateCouponsInput } from '../types/coupons'
 
-export const getCoupons = async (aad_uid: string) => {
+export const getCoupons = async (aadUid: string) => {
   return prisma.coupons.findMany({
     where: {
-      aad_uid,
+      aadUid,
     },
   })
 }

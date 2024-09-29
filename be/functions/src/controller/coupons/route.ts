@@ -12,10 +12,10 @@ import { validateToken } from '../../utils/aadB2C'
 
 export async function GET(req: HttpRequest): Promise<HttpResponseInit> {
   const id = Number(getQueryParams(req.url, 'id'))
-  const aad_uid = getQueryParams(req.url, 'uid')
+  const aadUid = getQueryParams(req.url, 'uid')
   const decodedToken: any = await validateToken(req)
   const decoded_uid = decodedToken.oid
-  console.log('aad_uid', aad_uid)
+  console.log('aadUid', aadUid)
 
   if (id) {
     const coupons = await getCoupon(id)
@@ -24,10 +24,10 @@ export async function GET(req: HttpRequest): Promise<HttpResponseInit> {
       return { jsonBody: { error: { message: 'Coupons not found' } }, status: 404 }
     }
     return { jsonBody: coupons }
-  } else if (aad_uid) {
+  } else if (aadUid) {
     // jwtのuidとクエリパラメータのuidが一致するか確認
-    if (decoded_uid === aad_uid) {
-      const coupons = await getCoupons(aad_uid)
+    if (decoded_uid === aadUid) {
+      const coupons = await getCoupons(aadUid)
       return { jsonBody: coupons }
     } else {
       return { jsonBody: 'Unauthorized', status: 401 }
@@ -39,10 +39,10 @@ export async function GET(req: HttpRequest): Promise<HttpResponseInit> {
 
 export async function POST(req: HttpRequest): Promise<HttpResponseInit> {
   const body = (await req.json()) as any
-  const aad_uid = body.aad_uid
+  const aadUid = body.aadUid
   const decodedToken: any = await validateToken(req)
   // jwtのuidとbodyのuidが一致するか確認
-  if (decodedToken.oid === aad_uid) {
+  if (decodedToken.oid === aadUid) {
     const coupons = await createCoupon(body)
     return { jsonBody: coupons }
   } else {
@@ -59,7 +59,7 @@ export async function PUT(req: HttpRequest): Promise<HttpResponseInit> {
   const body = (await req.json()) as any
   const updateValues = {
     name: body.name,
-    image_url: body.image_url,
+    imageUrl: body.imageUrl,
     description: body.description,
     expiration: body.expiration,
   }
