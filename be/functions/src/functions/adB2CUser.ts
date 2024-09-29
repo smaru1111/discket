@@ -10,7 +10,14 @@ export async function adB2CUser(
 
   try {
     const uid: any = getQueryParams(request.url, 'uid')
-    await validateToken(request)
+    const decodedToken: any = await validateToken(request)
+    const decodedUid = decodedToken.oid
+    if (uid !== decodedUid) {
+      return {
+        status: 401,
+        body: 'Unauthorized',
+      }
+    }
     const res: any = await cca.acquireTokenByClientCredential(tokenRequest)
     const accessToken = res.accessToken
     const fetchUserRes = await fetch('https://graph.microsoft.com/v1.0/users', {

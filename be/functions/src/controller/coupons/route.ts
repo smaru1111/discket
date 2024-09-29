@@ -8,10 +8,13 @@ import {
   getCoupons,
 } from '../../model/coupons'
 import { getQueryParams } from '../../utils/fetchUtils'
+import { validateToken } from '../../utils/aadB2C'
 
 export async function GET(req: HttpRequest): Promise<HttpResponseInit> {
   const id = Number(getQueryParams(req.url, 'id'))
-  const aad_uid = getQueryParams(req.url, 'aad_uid')
+  const aad_uid = getQueryParams(req.url, 'uid')
+  const decodedToken: any = await validateToken(req)
+  const decoded_uid = decodedToken.oid
 
   if (id) {
     const coupons = await getCoupon(id)
@@ -21,8 +24,13 @@ export async function GET(req: HttpRequest): Promise<HttpResponseInit> {
     }
     return { jsonBody: coupons }
   } else if (aad_uid) {
-    const coupons = await getCoupons(aad_uid)
-    return { jsonBody: coupons }
+    // jwtのuidとクエリパラメータのuidが一致するか確認
+    if (decoded_uid === aad_uid) {
+      const coupons = await getCoupons(aad_uid)
+      return { jsonBody: coupons }
+    } else {
+      return { jsonBody: 'Unauthorized', status: 401 }
+    }
   } else {
     return { jsonBody: 'Invalid query', status: 400 }
   }
@@ -30,8 +38,15 @@ export async function GET(req: HttpRequest): Promise<HttpResponseInit> {
 
 export async function POST(req: HttpRequest): Promise<HttpResponseInit> {
   const body = (await req.json()) as any
-  const coupons = await createCoupon(body)
-  return { jsonBody: coupons }
+  const aad_uid = body.aad_uid
+  const decodedToken: any = await validateToken(req)
+  // jwtのuidとbodyのuidが一致するか確認
+  if (decodedToken.oid === aad_uid) {
+    const coupons = await createCoupon(body)
+    return { jsonBody: coupons }
+  } else {
+    return { jsonBody: 'Unauthorized', status: 401 }
+  }
 }
 
 export async function PUT(req: HttpRequest): Promise<HttpResponseInit> {
