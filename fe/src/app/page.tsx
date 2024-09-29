@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { PlusCircle } from 'lucide-react'
 import { CouponCard } from '@/components/coupons/CouponCard'
-import { Dialog, DialogTrigger, DialogContent, DialogTitle } from '@radix-ui/react-dialog'
+
 import { CouponEntity } from '@/types/coupon'
 import { CouponForm } from '@/components/coupons/CouponForm'
 import { useAuthStore } from '@/store/AuthStore'
@@ -12,7 +12,13 @@ import useFetchCoupons from '@/hooks/fetchs/useFetchCoupons'
 import { enqueueSnackbar } from 'notistack'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/shadcn/ui/button'
-import { DialogHeader } from '@/components/shadcn/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/shadcn/ui/dialog'
 
 export default function Home() {
   const [isEditMode, setIsEditMode] = useState(false)

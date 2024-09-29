@@ -1,9 +1,10 @@
 import { CouponEntity } from '@/types/coupon'
-import { Label } from '@radix-ui/react-label'
+
 import { useState } from 'react'
 import { Button } from '../shadcn/ui/button'
 import { Textarea } from '../shadcn/ui/textarea'
 import { Input } from '../shadcn/ui/input'
+import { Label } from '../shadcn/ui/label'
 
 export function CouponForm({
   coupon,
