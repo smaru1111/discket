@@ -5,8 +5,8 @@ export default function CouponRepository() {
     return fetchApiWithEnv(`/api/coupons`)
   }
 
-  const fetchCoupon = async (uid: string) => {
-    return fetchApiWithEnv(`/api/coupons?aad_uid=${uid}`)
+  const fetchCoupon = async (id: number) => {
+    return fetchApiWithEnv(`/api/coupons?id=${id}`)
   }
 
   const createCoupon = async (data: any) => {
