@@ -1,5 +1,5 @@
-export type Coupon = {
-  id: number
+export type CouponEntity = {
+  id?: number
   imageUrl: string
   name: string
   description: string
