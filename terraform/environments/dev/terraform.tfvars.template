@@ -2,7 +2,7 @@ environment = "dev"
 location    = "eastus"
 db_admin_password = "test@hoge1234"
 
-repo_url = "https://github.com/discket/RAG-tool"
+repo_url = "https://github.com/discket.git"
 branch = "develop"
 github_token = "test"
 

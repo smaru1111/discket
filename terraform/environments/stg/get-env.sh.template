@@ -7,7 +7,7 @@ AD_B2C_TENANT_NAME="${PROJECT_NAME}${USE_ENVIRONMENT}.b2clogin.com"
 AD_B2C_DOMAIN_ID="${PROJECT_NAME}${USE_ENVIRONMENT}.onmicrosoft.com"
 
 # Get Azure DB Connection String
-database_url="postgresql://sqladmin:test@hoge1234@${PROJECT_NAME}sql${USE_ENVIRONMENT}.postgres.database.azure.com:5432/postgres?schema=public&sslmode=require"
+database_url="postgresql://sqladmin:test@hoge1234@${PROJECT_NAME}sqlpsgl${USE_ENVIRONMENT}.postgres.database.azure.com:5432/postgres?schema=public&sslmode=require"
 
 # Azureストレージアカウントの接続文字列を取得
 raw_connection_string=$(az storage account show-connection-string --resource-group $RESOURCE_GROUP --name $SA_NAME --query connectionString -o tsv)

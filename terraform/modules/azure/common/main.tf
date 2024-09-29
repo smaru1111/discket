@@ -96,7 +96,7 @@ module "postgres" {
   resource_group_name = module.resource_group.resource_group_name
   location            = module.resource_group.resource_group_location
 
-  qsgl_server_name   = "${var.project_name}sql${var.environment}"
+  qsgl_server_name   = "${var.project_name}sqlpsgl${var.environment}"
   qsgl_database_name = "${var.project_name}"
   admin_username    = "sqladmin"
   admin_password    = var.db_admin_password
@@ -121,36 +121,6 @@ resource "azurerm_key_vault_access_policy" "sp_access_policy" {
   secret_permissions = ["Get"]
 }
 
-module "azurerm_search_service"  {
-  depends_on = [module.resource_group]
-  source = "../ai_search"
-
-  resource_group_name = module.resource_group.resource_group_name
-  location            = module.resource_group.resource_group_location
-  search_service_name = "${var.project_name}${var.environment}search"
-  search_index_name   = "${var.project_name}${var.environment}index"
-}
-
-# 定義モデル: embededding model & chatgpt model
-module "azurerm_cognitive_account" {
-  depends_on = [module.resource_group]
-  source = "../aoai"
-
-  resource_group_name = module.resource_group.resource_group_name
-  cognitive_account_name = "${var.project_name}${var.environment}aoai"
-  embedding_deployment_name = "${var.project_name}${var.environment}embededding"
-  chatgpt_deployment_name = "${var.project_name}${var.environment}chatgpt"
-}
-
-module "document_intelligence" {
-  depends_on = [module.resource_group]
-  source = "../document_intelligence"
-
-  resource_group_name = module.resource_group.resource_group_name
-  location            = module.resource_group.resource_group_location
-  cognitive_account_name = "${var.project_name}${var.environment}documentintelligence"
-}
-
 module "b2c" {
   depends_on = [module.resource_group]
   source = "../b2c"
@@ -158,17 +128,4 @@ module "b2c" {
   resource_group_name = module.resource_group.resource_group_name
   display_name = "${var.project_name}${var.environment}b2c"
   domain_name = "${var.project_name}${var.environment}.onmicrosoft.com"
-}
-
-module "front_door" {
-  depends_on = [module.resource_group, module.static_site]
-  source = "../front_door"
-  count = var.use_front_door ? 1 : 0
-
-  project_name = var.project_name
-  environment  = var.environment
-  resource_group_name = module.resource_group.resource_group_name
-  location = module.resource_group.resource_group_location
-  static_site_default_hostname = module.static_site.static_site_url
-  static_site_id = module.static_site.static_site_id
 }

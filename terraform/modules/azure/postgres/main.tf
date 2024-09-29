@@ -1,7 +1,7 @@
 resource "azurerm_postgresql_flexible_server" "postgresql_server" {
   name                = var.qsgl_server_name
   resource_group_name = var.resource_group_name
-  location            = var.location
+  location            = "centralus" // eastus が制限で使えないため変更
   version                = "12"
   administrator_login    = var.admin_username
   administrator_password = var.admin_password
