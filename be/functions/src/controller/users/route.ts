@@ -1,6 +1,6 @@
+import { getQueryParams } from '../../utils/fetchUtils'
 import { createUser, deleteUser, getUser, getUsers, updateUser } from '../../model/user'
 import { HttpRequest, HttpResponseInit } from '@azure/functions'
-import { getQueryParams } from '../../utils/getQuerygetQueryParams'
 
 export async function GET(req: HttpRequest): Promise<HttpResponseInit> {
   try {
