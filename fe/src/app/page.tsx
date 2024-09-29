@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { PlusCircle } from 'lucide-react'
+import { PlusCircle, LogOut } from 'lucide-react'
 import { CouponCard } from '@/components/coupons/CouponCard'
 
 import { CouponEntity } from '@/types/coupon'
@@ -37,7 +37,7 @@ export default function Home() {
   const me = useAuthStore((state) => state.me)
   const coupons = useCouponStore((state) => state.coupons)
   const { createCoupon, deleteCoupon, updateCoupon, fetchCoupons } = useFetchCoupons()
-  const { getAccount } = useAuth()
+  const { getAccount, logout } = useAuth() // ログアウト関数を追加
 
   const handleCouponAddNew = async () => {
     setSelectedCoupon(defaultCoupon)
@@ -100,6 +100,16 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-4">
+      <header className="flex justify-between items-center mb-8">
+        <div className="text-3xl font-bold">Discket</div>
+        <div className="flex items-center space-x-4">
+          {me?.name && <span>ようこそ, {me.name} さん</span>}
+          <Button onClick={logout} variant="outline">
+            <LogOut className="mr-2 h-4 w-4" /> ログアウト
+          </Button>
+        </div>
+      </header>
+
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">割引券管理</h1>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
@@ -121,6 +131,7 @@ export default function Home() {
           </DialogContent>
         </Dialog>
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {coupons.map((coupon) => (
           <CouponCard
