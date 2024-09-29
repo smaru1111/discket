@@ -37,4 +37,4 @@ const createCouponSlice: StateCreator<CouponSlice> = (set, get) => ({
     set((state) => ({ coupons: state.coupons.filter((u) => u.id !== id) })),
 })
 
-export const useCouponsStore = create<CouponSlice>(createCouponSlice)
+export const useCouponStore = create<CouponSlice>(createCouponSlice)

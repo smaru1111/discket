@@ -1,5 +1,5 @@
 export type CouponEntity = {
-  id?: number
+  id: number | null
   imageUrl: string
   name: string
   description: string
