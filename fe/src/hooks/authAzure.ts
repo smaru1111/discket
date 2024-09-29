@@ -13,6 +13,9 @@ if (typeof window !== 'undefined') {
 
 export const b2cPolicies = {
   authorities: {
+    signInUp: {
+      authority: process.env.NEXT_PUBLIC_AZURE_AD_B2C_AUTHORITY + '_signinup' || '',
+    },
     signIn: {
       authority: process.env.NEXT_PUBLIC_AZURE_AD_B2C_AUTHORITY + '_signin' || '',
     },
@@ -25,7 +28,7 @@ export const b2cPolicies = {
 export const msalConfig: Configuration = {
   auth: {
     clientId: process.env.NEXT_PUBLIC_AZURE_AD_B2C_CLIENT_ID || '',
-    authority: b2cPolicies.authorities.signIn.authority,
+    authority: b2cPolicies.authorities.signInUp.authority,
     knownAuthorities: [process.env.NEXT_PUBLIC_AZURE_AD_B2C_TENANT_NAME || ''],
     redirectUri: redirectUri,
   },
@@ -37,7 +40,7 @@ export const msalConfig: Configuration = {
 
 export const signInRequest = {
   scopes: ['openid'],
-  authority: b2cPolicies.authorities.signIn.authority,
+  authority: b2cPolicies.authorities.signInUp.authority,
   extraQueryParameters: { ui_locales: 'ja' },
 }
 
