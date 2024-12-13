@@ -98,7 +98,7 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  console.log('secret', process.env.NEXT_PUBLIC_SECRET)
+  console.log('secret', process.env.NEXT_PUBLIC_GITHUB_SECRET)
 
   return (
     <div className="container mx-auto p-4">
