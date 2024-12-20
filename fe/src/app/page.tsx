@@ -37,7 +37,9 @@ export default function Home() {
   const me = useAuthStore((state) => state.me)
   const coupons = useCouponStore((state) => state.coupons)
   const { createCoupon, deleteCoupon, updateCoupon, fetchCoupons } = useFetchCoupons()
-  const { getAccount, logout } = useAuth() // ログアウト関数を追加
+  const { getAccount, logout } = useAuth() 
+  
+  console.log('secret', process.env.NEXT_PUBLIC_GITHUB_SECRET)
 
   const handleCouponAddNew = async () => {
     setSelectedCoupon(defaultCoupon)
